@@ -1,6 +1,13 @@
 
 function boot() {
 	return {
+		preload: function () {
+			game.load.spritesheet('dude', 'data/images/skull_360.png', 30, 30);
+			game.load.spritesheet('button1', 'data/images/button1.png', 64, 64);
+			game.load.spritesheet('tower1', 'data/images/tower1.png', 32, 32);
+			game.load.spritesheet('button2', 'data/images/button2.png', 64, 64);
+			game.load.spritesheet('tower2', 'data/images/tower2.png', 32, 32);
+	    },
 		create: function() {
 			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
 			game.stage.backgroundColor = '#FFFF00';
@@ -16,16 +23,11 @@ function level1() {
 		enemies: [],
 		towers: [],
 		preload: function () {
-
-	    game.load.tilemap('map1', 'data/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
-	    game.load.image('tiles', 'data/images/tile2map32.png');
+	    	game.load.tilemap('map1', 'data/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
+	    	game.load.image('tiles', 'data/images/tile2map32.png');
 			game.load.image('background', 'data/images/FR_Grasslands.png');
 
-			game.load.spritesheet('dude', 'data/images/skull_360.png', 30, 30);
-      game.load.spritesheet('monster', 'data/images/monster.png', 32, 32);
-			game.load.spritesheet('tower', 'data/images/square.png', 32, 32);
-
-		},
+	   },
 
 		create: function () {
 
@@ -47,14 +49,20 @@ function level1() {
 	    layer = this.map.createLayer('map');
 
 
-			createEnemy(0, 10*32, 0);
+		    //  This resizes the game world to match the layer dimensions
+		    //layer.resizeWorld();
 
-	    //  This resizes the game world to match the layer dimensions
-	    //layer.resizeWorld();
-
+			hud = new HUDLayer();
 		},
 
+	    render: function(){
+	      //game.debug.text("Mouse x: " + game.input.activePointer.position.x, 300, 92);
+	      //game.debug.text("Mouse y: " + game.input.activePointer.position.y, 300, 112);
+	      //game.debug.text("Left Button: " + game.input.activePointer.leftButton.isDown, 300, 132);
+	    },
+
 		update: function () {
+			hud.update();
 			this.enemies.forEach(a => a.update());
 		}
 	};
