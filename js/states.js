@@ -2,9 +2,11 @@
 function boot() {
 	return {
 		preload: function () {
-	      game.load.spritesheet('dude', 'data/images/skull_360.png', 30, 30);
-	      game.load.spritesheet('button1', 'data/images/button.png', 64, 64);
-	      game.load.spritesheet('tower1', 'data/images/tower.png', 32, 32);
+			game.load.spritesheet('dude', 'data/images/skull_360.png', 30, 30);
+			game.load.spritesheet('button1', 'data/images/button1.png', 64, 64);
+			game.load.spritesheet('tower1', 'data/images/tower1.png', 32, 32);
+			game.load.spritesheet('button2', 'data/images/button2.png', 64, 64);
+			game.load.spritesheet('tower2', 'data/images/tower2.png', 32, 32);
 	    },
 		create: function() {
 			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
