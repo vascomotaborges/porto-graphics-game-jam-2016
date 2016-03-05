@@ -1,0 +1,22 @@
+{
+  "name": "porto-graphics-game-jam-2016-entry",
+  "version": "0.0.1",
+  "description": "Porto Graphics Game Jam 2016 entry",
+  "main": "main.js",
+  "devDependencies": {
+    "express": "^4.13.x"
+  },
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vascomotaborges/porto-graphics-game-jam-2016.git"
+  },
+  "author": "Team ShareWare",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vascomotaborges/porto-graphics-game-jam-2016/issues"
+  }
+}
