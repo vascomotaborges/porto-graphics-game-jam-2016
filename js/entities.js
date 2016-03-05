@@ -87,7 +87,7 @@ function updateGrid(x, y, value) {
 function Tower(x, y) {
 
 	// The player and its settings
-	this.player = game.add.sprite(x*32, y*32, 'tower', 0);
+	this.player = game.add.sprite(x*32, y*32, 'tower1', 0);
 	this.player.enableBody = true;
 
 	//  We need to enable physics on the player
