@@ -18,14 +18,14 @@ function HUDLayer() {
     hud.forEach(function(btn){
       if(btn.input.pointerDown()){
       	hudClicked = true;
-        hud.activeBtn = hud.getIndex(btn)+1;
+        hud.activeBtn = hud.getIndex(btn);
       }
     });
     if(!hudClicked){
     	if(hud.activeBtn != null && game.input.activePointer.leftButton.isDown){
 	    	var posx = Math.round((-16+game.input.activePointer.position.x)/32);
 	    	var posy = Math.round((-16+game.input.activePointer.position.y)/32);
-	    	createTower(posx, posy);
+	    	createTower(posx, posy, hud.activeBtn);
 	    }
     }
   }
