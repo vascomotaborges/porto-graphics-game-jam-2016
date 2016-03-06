@@ -5,13 +5,15 @@ var game = new Phaser.Game(1280, 720, Phaser.AUTO, '');
 var pathfinder;
 var grid;
 var hud;
+var lives = 20;
 
 function HUDLayer() {
   hud = game.add.group();
   hud.activeBtn = null;
 
-  hud.create(game.width/2, game.height - 60, 'button1');
-  hud.create(game.width/2 + 70, game.height - 60, 'button2');
+  hud.create(game.width/2 - 175 - 30 - 83, game.height - 110, 'button1');
+  hud.create(game.width/2 - 83, game.height - 110, 'button2');
+  hud.create(game.width/2 + 30 + 83, game.height - 110, 'button3');
   hud.forEach(function(btn){ btn.inputEnabled = true });
 
   hud.update = function(){

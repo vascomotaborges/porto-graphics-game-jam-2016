@@ -57,7 +57,7 @@ function Enemy(x, y, type) {
 			this.path = path;
 	}).bind(enemy));
 
-	enemy.update = (function() {
+	enemy.update = function() {
 
 		if(this.props.health < 0) {
 			this.position.y = 50000;
@@ -90,17 +90,22 @@ function Enemy(x, y, type) {
         }
         var dist = 0.1 * Math.sqrt((distx*distx) + (disty*disty));
         this.body.velocity.x = this.props.speed * (distx/dist); // ;
-        this.body.velocity.y = (disty/dist); //this.props.speed * ;
+        this.body.velocity.y = this.props.speed *(disty/dist);  ;
 
 				var direction = getDirection(this);
 				//console.log(direction);
 				this.animations.play(direction);
 
       } else {
-        // Stop
-
-        this.body.velocity.x = 0;
-        this.body.velocity.y = 0;
+        // Reached end?
+        var state = game.state.getCurrentState();
+        if(state.endTile.x == Math.round(this.body.position.x/TILEWIDTH) && state.endTile.y == Math.round(this.body.position.y/TILEHEIGHT)){
+          // Stop
+          this.body.velocity.x = 0;
+          this.body.velocity.y = 0;
+          this.destroy();
+          lives--;
+        }
       }
 
     }
@@ -118,6 +123,7 @@ function Enemy(x, y, type) {
 	enemy.reduceHealth = (function(h) {
 		this.props.health -= h;
 	}).bind(enemy);
+
 	return enemy;
 }
 
@@ -207,9 +213,11 @@ function Tower(x, y, type) {
 		this.direction += this.props.speed;
 		if(this.direction > Math.PI) this.direction -= 2*Math.PI;
 
-	this.findEnemiesInRange = function(enemys) {
+  	this.findEnemiesInRange = function(enemys) {
 
-	}
+  	}
+
+  }
 
 	return tower;
 

@@ -5,10 +5,12 @@ function boot() {
 			game.load.spritesheet('dude', 'data/images/skull_360.png', TILEWIDTH, TILEHEIGHT);
       		game.load.spritesheet('monster', 'data/images/monster.png', TILEWIDTH, TILEHEIGHT);
 
-			game.load.spritesheet('button1', 'data/images/button1.png', 64, 64);
+			game.load.spritesheet('button1', 'data/images/button1.png', 175, 113);
 			game.load.spritesheet('tower1', 'data/images/tower1.png', TILEWIDTH, TILEHEIGHT);
-			game.load.spritesheet('button2', 'data/images/button2.png', 64, 64);
+			game.load.spritesheet('button2', 'data/images/button2.png', 175, 113);
 			game.load.spritesheet('tower2', 'data/images/tower2.png', TILEWIDTH, TILEHEIGHT);
+			game.load.spritesheet('button3', 'data/images/button3.png', 175, 113);
+			//game.load.spritesheet('tower2', 'data/images/tower2.png', TILEWIDTH, TILEHEIGHT);
 	    },
 		create: function() {
 			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
@@ -65,15 +67,24 @@ function level1() {
 	      //game.debug.text("Mouse x: " + game.input.activePointer.position.x, 300, 92);
 	      //game.debug.text("Mouse y: " + game.input.activePointer.position.y, 300, 112);
 	      //game.debug.text("Left Button: " + game.input.activePointer.leftButton.isDown, 300, 132);
+	      game.debug.text(lives, 884, 43);
 	    },
 
 		update: function () {
-			hud.update();
-			this.enemies.forEach(a => a.update());
+			if(lives<=0) setTimeout(function() {game.state.start('gameover');}, 1000);
 		}
+	};
+}
+
+function gameover() {
+	return {
+		create: function() {
+			game.stage.backgroundColor = '#00FFFF';
+		},
 	};
 }
 
 game.state.add('boot', boot());
 game.state.add('level1', level1());
+game.state.add('gameover', gameover());
 game.state.start('boot');
