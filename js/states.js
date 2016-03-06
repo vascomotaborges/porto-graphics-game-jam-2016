@@ -8,10 +8,11 @@ function boot() {
 			game.load.spritesheet('tower1', 'data/images/tower1.png', 32, 32);
 			game.load.spritesheet('button2', 'data/images/button2.png', 64, 64);
 			game.load.spritesheet('tower2', 'data/images/tower2.png', 32, 32);
+
 	    },
 		create: function() {
 			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-			game.stage.backgroundColor = '#FFFF00';
+			game.stage.backgroundColor = '#CCCCCC';
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 			setTimeout(function() {game.state.start('level1');}, 1000);
 		},
@@ -21,11 +22,10 @@ function boot() {
 function level1() {
 	return {
 		map: {},
-		enemies: [],
-		towers: [],
+		enemies: undefined,
+		towers: undefined,
 		preload: function () {
-	    	game.load.tilemap('map1', 'data/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
-	    	//game.load.image('tiles', 'data/images/tile2map32.png');
+	    game.load.tilemap('map1', 'data/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
 			game.load.image('background', 'data/images/FR_Grasslands.png');
 
 	   },
@@ -49,9 +49,11 @@ function level1() {
 			game.add.sprite(0, 0, 'background');
 	    //layer = this.map.createLayer('map');
 
+			this.enemies = game.add.group();
+			this.towers = game.add.group();
 
-		    //  This resizes the game world to match the layer dimensions
-		    //layer.resizeWorld();
+		  //This resizes the game world to match the layer dimensions
+		  //layer.resizeWorld();
 
 			hud = new HUDLayer();
 		},
