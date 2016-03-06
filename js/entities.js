@@ -3,35 +3,44 @@ var enemy_props = function(type) {
 	var x = {
 		'dude': {
 			health: 10,
-			speed: 10
+			speed: 10,
+      score: 2
 		},
 		'monster': {
 			health: 1000,
-			speed: 5
+			speed: 5,
+      score: 5
 		},
 		'sancho' : {
 			health: 5000,
-			speed: 2
+			speed: 2,
+      score: 10
 		}
 	};
 	return x[type];
 };
 
-var tower_type = ['tower1', 'tower2'];
+var tower_type = ['tower1', 'tower2', 'tower3'];
 var tower_props = function(type) {
 	var x = {
 		'tower1': {
-			speed: 0.03,
+			speed: 0.035,
 			dist_range: 2*48,
 			ang_range: 80,
 			power: 1
 		},
 		'tower2': {
-			speed: 0.01,
-			dist_range: 2*48,
-			ang_range: 60,
+			speed: 0.015,
+			dist_range: 3*48,
+			ang_range: 40,
 			power: 5
-		}
+		},
+    'tower3': {
+      speed: 0.025,
+      dist_range: 3*48,
+      ang_range: 60,
+      power: 10
+    }
 	};
 	return x[type];
 };
@@ -106,11 +115,15 @@ function Enemy(x, y, type) {
           this.body.velocity.y = 0;
           this.destroy();
           lives--;
+          state.enemiesLeft -= 1;
         }
       }
 
 			if(this.props.health < 0) {
+        var state = game.state.getCurrentState();
+        state.enemiesLeft -= 1;
 				this.destroy();
+        score += this.props.score;
 			}
 
     }
@@ -155,7 +168,7 @@ function Tower(x, y, type) {
 	//this.player.anchor.y = 1;
 	tower.body.gravity.y = 0;
 	//player.body.collideWorldBounds = true;
-	tower.direction = 0;
+	tower.direction = (-0.5+Math.random())*(2*Math.PI);
 	// define basic walking animation
   tower.animations.add("0_idle", [0], 300, false);
 	tower.animations.add("0_fire", [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24], 30, true);
@@ -183,7 +196,6 @@ function Tower(x, y, type) {
 	tower.animations.add("11_fire", [276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299], 30, true);
 	tower.animations.play("0_idle");
 
-	tower.direction = 0;
 	tower.props = tower_props(type);
 
 	tower.line = new Phaser.Line(0,0,0,0);

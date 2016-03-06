@@ -11,7 +11,7 @@ function boot() {
 			game.load.spritesheet('button2', 'data/images/button2.png', 175, 113);
 			game.load.spritesheet('tower2', 'data/images/tower2.png', TILEWIDTH, TILEHEIGHT);
 			game.load.spritesheet('button3', 'data/images/button3.png', 175, 113);
-			//game.load.spritesheet('tower2', 'data/images/tower2.png', TILEWIDTH, TILEHEIGHT);
+			game.load.spritesheet('tower3', 'data/images/tower3.png', TILEWIDTH, TILEHEIGHT);
 	    },
 		create: function() {
 			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
@@ -58,14 +58,14 @@ class RevealText extends Phaser.BitmapText {
 function logo() {
 	return {
 		preload: function () {
-			game.load.image('logo', 'data/images/grid.png');
+			game.load.image('logo', 'data/images/logo.png');
 		},
 
 		create: function() {
 			game.add.sprite(0, 0, 'logo');
 			setTimeout(function() {
 				game.state.start('intro')
-			},2000)
+			},5000)
 		},
 	};
 }
@@ -73,6 +73,8 @@ function logo() {
 function intro() {
 	return {
 		preload: function () {
+			score = 0;
+			lives = 20;
 			game.load.bitmapFont('font', 'data/images/font4.png', 'data/images/font4.fnt');
 		},
 
@@ -85,8 +87,8 @@ The evil guy, sent his minions to kidnap the beautiful princess!
 
 This is the story of an architect prince,
 building twisted towers to defende his princess!                        `;
-			x = new RevealText(game, 250, 100, 'font', text, 16, 5);
-			x.tint = 0xEEEE00;
+			x = new RevealText(game, 250, 100, 'font', text, 32, 5);
+			x.tint = 0xC60000;
 		},
 		update: function() {
 	    	x.update();
@@ -101,6 +103,24 @@ function level1() {
 		towers: undefined,
 		startTile: {x:2 , y:7},
 		endTile: {x:24 , y:7},
+		enemiesLeft: 0,
+		waves: [
+				{ 
+					delay: 1000, monsters: [0,0,0,0,0]
+				},
+				{
+					delay: 700, monsters: [0,0,0,0,0]
+				},
+				{
+					delay: 1000, monsters: [0,1,0,1,0]
+				},
+				{
+					delay: 1000, monsters: [0,0,0,1,1,1]
+				},
+				{
+					delay: 700, monsters: [0,0,0,0,1,1,1,1]
+				} 
+			],
 		preload: function () {
 	    	game.load.tilemap('map1', 'data/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
 	    	game.load.image('ground', 'data/images/level_1.png');
@@ -137,14 +157,24 @@ function level1() {
 		},
 
 	    render: function(){
-	      game.debug.text(this.enemies.length, 30,30 );
+	      //game.debug.text(this.enemies.length, 30,30 );
 	      //game.debug.text("Mouse y: " + game.input.activePointer.position.y, 300, 112);
 	      //game.debug.text("Left Button: " + game.input.activePointer.leftButton.isDown, 300, 132);
 	      game.debug.text(lives, 884, 43);
+	      game.debug.text(score, 544, 43);
 	    },
 
 		update: function () {
 			if(lives<=0) setTimeout(function() {game.state.start('gameover');}, 1000);
+			if(this.enemiesLeft == 0){
+				if(this.waves.length){
+					var wave = this.waves.shift();
+					createWave(wave.delay, wave.monsters);
+					this.enemiesLeft = wave.monsters.length;
+				}else{
+					game.state.start('level2')
+				}
+			}
 		}
 	};
 }
@@ -152,8 +182,15 @@ function level1() {
 
 function gameover() {
 	return {
+		preload: function () {
+			game.load.image('gameover', 'data/images/gameover.png');
+		},
+
 		create: function() {
-			game.stage.backgroundColor = '#00FFFF';
+			game.add.sprite(0, 0, 'gameover');
+			setTimeout(function() {
+				game.state.start('intro')
+			},5000)
 		},
 	};
 }

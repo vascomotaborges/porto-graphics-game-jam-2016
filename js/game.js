@@ -6,6 +6,7 @@ var pathfinder;
 var grid;
 var hud;
 var lives = 20;
+var score = 0;
 
 function HUDLayer() {
   hud = game.add.group();
