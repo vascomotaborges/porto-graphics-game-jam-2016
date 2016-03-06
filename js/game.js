@@ -1,8 +1,9 @@
-var game = new Phaser.Game(960, 640, Phaser.AUTO, '');
+const TILEWIDTH = TILEHEIGHT = 48;
+
+var game = new Phaser.Game(1280, 720, Phaser.AUTO, '');
 
 var pathfinder;
 var grid;
-var map;
 var hud;
 
 function HUDLayer() {
@@ -23,8 +24,8 @@ function HUDLayer() {
     });
     if(!hudClicked){
     	if(hud.activeBtn != null && game.input.activePointer.leftButton.isDown){
-	    	var posx = Math.round((-16+game.input.activePointer.position.x)/32);
-	    	var posy = Math.round((-16+game.input.activePointer.position.y)/32);
+	    	var posx = Math.round((game.input.activePointer.position.x-TILEWIDTH/2)/TILEWIDTH);
+        var posy = Math.round((game.input.activePointer.position.y-TILEHEIGHT/2)/TILEHEIGHT);
 	    	createTower(posx, posy, hud.activeBtn);
 	    }
     }
