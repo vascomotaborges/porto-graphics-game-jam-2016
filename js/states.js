@@ -2,10 +2,10 @@
 function boot() {
 	return {
 		preload: function () {
-			game.load.spritesheet('dude', 'data/images/sancho.png', 48, 48);
+			game.load.spritesheet('dude', 'data/images/skull_360.png', 30, 30);
       game.load.spritesheet('monster', 'data/images/monster.png', 32, 32);
 			game.load.spritesheet('button1', 'data/images/button1.png', 64, 64);
-			game.load.spritesheet('tower1', 'data/images/tower1.png', 32, 32);
+			game.load.spritesheet('tower1', 'data/images/tower1.png', 48, 48);
 			game.load.spritesheet('button2', 'data/images/button2.png', 64, 64);
 			game.load.spritesheet('tower2', 'data/images/tower2.png', 32, 32);
 
@@ -24,6 +24,7 @@ function level1() {
 		map: {},
 		enemies: undefined,
 		towers: undefined,
+		line: undefined,
 		preload: function () {
 	    game.load.tilemap('map1', 'data/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
 			game.load.image('background', 'data/images/FR_Grasslands.png');
@@ -51,18 +52,18 @@ function level1() {
 
 			this.enemies = game.add.group();
 			this.towers = game.add.group();
-
+			//this.lines = game.add.group();
 		  //This resizes the game world to match the layer dimensions
 		  //layer.resizeWorld();
 
 			hud = new HUDLayer();
+
+			createWave(940, [1]);
 		},
 
-	    render: function(){
-	      //game.debug.text("Mouse x: " + game.input.activePointer.position.x, 300, 92);
-	      //game.debug.text("Mouse y: " + game.input.activePointer.position.y, 300, 112);
-	      //game.debug.text("Left Button: " + game.input.activePointer.leftButton.isDown, 300, 132);
-	    },
+    render: function(){
+      //console.log(this.towers.length);
+    },
 
 		update: function () {
 			hud.update();
