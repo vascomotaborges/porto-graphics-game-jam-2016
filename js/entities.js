@@ -1,33 +1,39 @@
 var enemy_type = ['dude','monster', 'sancho'];
-var enemy_props = {
-	'dude': {
-		health: 1,
-		speed: 10
-	},
-	'monster': {
-		health: 1000,
-		speed: 5
-	},
-	'sancho' : {
-		health: 5000,
-		speed: 2
-	}
+var enemy_props = function(type) {
+	var x = {
+		'dude': {
+			health: 10,
+			speed: 10
+		},
+		'monster': {
+			health: 1000,
+			speed: 5
+		},
+		'sancho' : {
+			health: 5000,
+			speed: 2
+		}
+	};
+	return x[type];
 };
 
 var tower_type = ['tower1', 'tower2'];
-var tower_props = {
-	'tower1': {
-		speed: 0.03,
-		dist_range: 2*48,
-		ang_range: 80,
-		power: 1
-	},
-	'tower2': {
-		speed: 0.01,
-		dist_range: 2*48,
-		ang_range: 60,
-		power: 5
-	},
+var tower_props = function(type) {
+	var x = {
+		'tower1': {
+			speed: 0.03,
+			dist_range: 2*48,
+			ang_range: 80,
+			power: 1
+		},
+		'tower2': {
+			speed: 0.01,
+			dist_range: 2*48,
+			ang_range: 60,
+			power: 5
+		}
+	};
+	return x[type];
 };
 
 function Enemy(x, y, type) {
@@ -38,7 +44,7 @@ function Enemy(x, y, type) {
 
 	enemy.enableBody = true;
   enemy.dirty = false;
-	enemy.props = enemy_props[type];
+	enemy.props = enemy_props(type);
 
 	//  Player physics properties.
 	//this.enemy.anchor.x = 0.5;
@@ -57,11 +63,9 @@ function Enemy(x, y, type) {
 			this.path = path;
 	}).bind(enemy));
 
-	enemy.update = (function() {
+	enemy.update = function() {
 
-		if(this.props.health < 0) {
-			this.position.y = 50000;
-		}
+
 
 		//Check the path
     if(this.dirty) this.updatePath();
@@ -90,7 +94,7 @@ function Enemy(x, y, type) {
         }
         var dist = 0.1 * Math.sqrt((distx*distx) + (disty*disty));
         this.body.velocity.x = this.props.speed * (distx/dist); // ;
-        this.body.velocity.y = (disty/dist); //this.props.speed * ;
+        this.body.velocity.y = this.props.speed * (disty/dist); //this.props.speed * ;
 
 				var direction = getDirection(this);
 				//console.log(direction);
@@ -102,6 +106,16 @@ function Enemy(x, y, type) {
         this.body.velocity.x = 0;
         this.body.velocity.y = 0;
       }
+
+			if(this.props.health < 0) {
+				console.log("BAMMMM!");
+				console.log(this.position);
+				this.destroy();
+				//this.props.health = 100;
+				//this.body.position.x = 10000;
+				//this.body.velocity.x = 0;
+				//this.body.velocity.y = 0;
+			}
 
     }
 	};
@@ -115,9 +129,10 @@ function Enemy(x, y, type) {
 		}).bind(this));
 	};
 
-	enemy.reduceHealth = (function(h) {
+	enemy.reduceHealth = function(h) {
 		this.props.health -= h;
-	}).bind(enemy);
+	};
+
 	return enemy;
 }
 
@@ -173,7 +188,7 @@ function Tower(x, y, type) {
 	tower.animations.play("0_idle");
 
 	tower.direction = 0;
-	tower.props = tower_props[type];
+	tower.props = tower_props(type);
 
 	tower.line = new Phaser.Line(0,0,0,0);
 
@@ -183,7 +198,8 @@ function Tower(x, y, type) {
 
 	tower.findEnemiesInRange = function(enemies) {
 		//linear distance.
-		var inrange = enemies.children.some(a => {
+		console.log(enemies.children.length)
+		var inrange = enemies.children.some(function(a) {
 
 			this.line.start = this.position;
 			this.line.end = a.position;
@@ -198,7 +214,7 @@ function Tower(x, y, type) {
 				}
 			}
 			return false;
-		});
+		}, this);
 
 		return inrange;
 	};
@@ -207,9 +223,12 @@ function Tower(x, y, type) {
 		this.direction += this.props.speed;
 		if(this.direction > Math.PI) this.direction -= 2*Math.PI;
 
-	this.findEnemiesInRange = function(enemys) {
+		var angle = ((360 + (180*this.direction/Math.PI)) % 360) - 15;
 
-	}
+		var frame = Math.round(angle/30);
+		var mode = this.findEnemiesInRange(state.enemies) ? "fire" : "idle"
+		this.animations.play(frame+"_"+mode);
+	};
 
 	return tower;
 
