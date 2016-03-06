@@ -2,11 +2,11 @@
 function boot() {
 	return {
 		preload: function () {
-			game.load.spritesheet('dude', 'data/images/skull_360.png', 30, 30);
+			game.load.spritesheet('dude', 'data/images/skull_360.png', TILEWIDTH, TILEHEIGHT);
 			game.load.spritesheet('button1', 'data/images/button1.png', 64, 64);
-			game.load.spritesheet('tower1', 'data/images/tower1.png', 32, 32);
+			game.load.spritesheet('tower1', 'data/images/tower1.png', TILEWIDTH, TILEHEIGHT);
 			game.load.spritesheet('button2', 'data/images/button2.png', 64, 64);
-			game.load.spritesheet('tower2', 'data/images/tower2.png', 32, 32);
+			game.load.spritesheet('tower2', 'data/images/tower2.png', TILEWIDTH, TILEHEIGHT);
 	    },
 		create: function() {
 			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
@@ -22,11 +22,12 @@ function level1() {
 		map: {},
 		dudes: [],
 		towers: [],
+		startTile: {x:0 , y:5}, 
+		endTile: {x:20 , y:6},
 		preload: function () {
 	    	game.load.tilemap('map1', 'data/maps/map1.json', null, Phaser.Tilemap.TILED_JSON);
-	    	game.load.image('tiles', 'data/images/tile2map32.png');
-			game.load.image('background', 'data/images/FR_Grasslands.png');
-
+	    	game.load.image('tileset', 'data/images/tileset48.png');
+	    	game.load.image('grid', 'data/images/grid.png');
 		},
 
 		create: function () {
@@ -35,18 +36,21 @@ function level1() {
 
 		    //  The 'map' key here is the Loader key given in game.load.tilemap
 		    this.map = game.add.tilemap('map1');
-			map = this.map;
 
 			grid = pathfinder.setGrid(this.map.layers[0].data, [-1]);
+			console.log(grid);
 
 		    //  The first parameter is the tileset name, as specified in the Tiled map editor (and in the tilemap json file)
 		    //  The second parameter maps this name to the Phaser.Cache key 'tiles'
-		    this.map.addTilesetImage('forest', 'tiles');
+		    this.map.addTilesetImage('tileset', 'tileset');
+		    this.map.addTilesetImage('grid', 'grid');
 
 		    //  Creates a layer from the World1 layer in the map data.
 		    //  A Layer is effectively like a Phaser.Sprite, so is added to the display list.
-			game.add.sprite(0, 0, 'background');
-	    	layer = this.map.createLayer('map');
+			//game.add.sprite(0, 0, 'background');
+	    	this.map.createLayer('ground');
+	    	this.map.createLayer('grid');
+	    	this.map.createLayer('decor');
 
 
 		    //  This resizes the game world to match the layer dimensions

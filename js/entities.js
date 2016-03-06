@@ -18,7 +18,8 @@ function Dude(x, y) {
 	this.player.animations.add("left", [60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89], 60, true);
 	this.player.animations.add("up", [90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119], 60, true);
 
-	findPathTo((x/32)|0,(y/32)|0,29,10, (function(path) {
+	var state = game.state.getCurrentState();
+	findPathTo((x/TILEWIDTH)|0,(y/TILEHEIGHT)|0,state.endTile.x,state.endTile.y, (function(path) {
 			this.path = path;
 	}).bind(this));
 
@@ -32,8 +33,8 @@ function Dude(x, y) {
         //Next destination
         if(!this.next) {
           this.next = this.path.shift();
-          this.next.x *= 32;
-          this.next.y *= 32;
+          this.next.x *= TILEWIDTH;
+          this.next.y *= TILEHEIGHT;
         }
 
         var distx = this.next.x - this.player.body.position.x;
@@ -41,8 +42,8 @@ function Dude(x, y) {
 
         if(Math.abs(distx) < 1 && Math.abs(disty) < 1) {
           this.next = this.path.shift();
-          this.next.x *= 32;
-          this.next.y *= 32;
+          this.next.x *= TILEWIDTH;
+          this.next.y *= TILEHEIGHT;
           distx = this.next.x - this.player.body.position.x;
           disty = this.next.y - this.player.body.position.y;
         }
@@ -67,8 +68,9 @@ function Dude(x, y) {
 	};
 
 	this.updatePath = function() {
-		findPathTo(Math.round((this.player.body.position.x)/32),Math.round((this.player.body.position.y)/32),29,10, (function(path) {
-				console.log(Math.round((this.player.body.position.x)/32),Math.round((this.player.body.position.y)/32));
+		var state = game.state.getCurrentState();
+		findPathTo(Math.round((this.player.body.position.x)/TILEWIDTH),Math.round((this.player.body.position.y)/TILEHEIGHT),state.endTile.x,state.endTile.y, (function(path) {
+				console.log(Math.round((this.player.body.position.x)/TILEWIDTH),Math.round((this.player.body.position.y)/TILEHEIGHT));
 				this.path = path;
 				this.next = undefined;
 		}).bind(this));
@@ -87,7 +89,7 @@ function updateGrid(x, y, value) {
 function Tower(x, y) {
 
 	// The player and its settings
-	this.player = game.add.sprite(x*32, y*32, 'tower1', 0);
+	this.player = game.add.sprite(x*TILEWIDTH, y*TILEHEIGHT, 'tower1', 0);
 	this.player.enableBody = true;
 
 	//  We need to enable physics on the player
@@ -109,11 +111,11 @@ function Tower(x, y) {
 }
 
 function createTower(x, y) {
-
 	updateGrid(y, x, 15);
-	findPathTo(1,10,29,10, function(path) {
+	var state = game.state.getCurrentState();
+	findPathTo(state.startTile.x,state.startTile.y,state.endTile.x,state.endTile.y, function(path) {
 		if(path) {
-			var state = game.state.getCurrentState();
+			
 			state.towers.push(new Tower(x, y));
 			state.dudes.forEach(a => a.updatePath());
 		} else {
@@ -140,7 +142,7 @@ function createWave(n, interval) {
 	timer.n = n;
 	timer.loop(interval, function() {
 		console.log(this);
-		if(this.n-- !== 0) createDude(0,10*32);
+		if(this.n-- !== 0) createDude(0*TILEWIDTH,10*TILEHEIGHT);
 		else this.stop();
 	}, timer);
 	timer.start();
