@@ -3,17 +3,17 @@ var enemy_props = function(type) {
 	var x = {
 		'dude': {
 			health: 10,
-			speed: 10,
+			speed: 12,
       score: 2
 		},
 		'monster': {
 			health: 1000,
-			speed: 5,
+			speed: 8,
       score: 5
 		},
 		'sancho' : {
 			health: 5000,
-			speed: 2,
+			speed: 6,
       score: 10
 		}
 	};
@@ -33,13 +33,13 @@ var tower_props = function(type) {
 			speed: 0.015,
 			dist_range: 3*48,
 			ang_range: 40,
-			power: 5
+			power: 3
 		},
     'tower3': {
       speed: 0.025,
       dist_range: 3*48,
       ang_range: 60,
-      power: 10
+      power: 5
     }
 	};
 	return x[type];

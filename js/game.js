@@ -5,7 +5,7 @@ var game = new Phaser.Game(1280, 720, Phaser.AUTO, '');
 var pathfinder;
 var grid;
 var hud;
-var lives = 20;
+var lives = 3;
 var score = 0;
 
 function HUDLayer() {
