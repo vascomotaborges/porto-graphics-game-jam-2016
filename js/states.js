@@ -1,26 +1,26 @@
 'use strict';
 
 function boot() {
-	return {
-		preload: function () {
-			game.load.spritesheet('dude', 'data/images/skull_360.png', TILEWIDTH, TILEHEIGHT);
-      		game.load.spritesheet('monster', 'data/images/monster.png', TILEWIDTH, TILEHEIGHT);
-			game.load.spritesheet('sancho', 'data/images/sancho.png', TILEWIDTH, TILEHEIGHT);
+  return {
+    preload: function () {
+      game.load.spritesheet('dude', 'data/images/skull_360.png', TILEWIDTH, TILEHEIGHT);
+      game.load.spritesheet('monster', 'data/images/monster.png', TILEWIDTH, TILEHEIGHT);
+      game.load.spritesheet('sancho', 'data/images/sancho.png', TILEWIDTH, TILEHEIGHT);
 
-			game.load.spritesheet('button1', 'data/images/button1.png', 175, 113);
-			game.load.spritesheet('tower1', 'data/images/tower1.png', TILEWIDTH, TILEHEIGHT);
-			game.load.spritesheet('button2', 'data/images/button2.png', 175, 113);
-			game.load.spritesheet('tower2', 'data/images/tower2.png', TILEWIDTH, TILEHEIGHT);
-			game.load.spritesheet('button3', 'data/images/button3.png', 175, 113);
-			game.load.spritesheet('tower3', 'data/images/tower3.png', TILEWIDTH, TILEHEIGHT);
-	    },
-		create: function() {
-			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-			game.stage.backgroundColor = '#000000';
-			game.physics.startSystem(Phaser.Physics.ARCADE);
-			setTimeout(function() {game.state.start('logo');}, 1000);
-		},
-	};
+      game.load.spritesheet('button1', 'data/images/button1.png', 175, 113);
+      game.load.spritesheet('tower1', 'data/images/tower1.png', TILEWIDTH, TILEHEIGHT);
+      game.load.spritesheet('button2', 'data/images/button2.png', 175, 113);
+      game.load.spritesheet('tower2', 'data/images/tower2.png', TILEWIDTH, TILEHEIGHT);
+      game.load.spritesheet('button3', 'data/images/button3.png', 175, 113);
+      game.load.spritesheet('tower3', 'data/images/tower3.png', TILEWIDTH, TILEHEIGHT);
+    },
+    create: function() {
+      pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
+      game.stage.backgroundColor = '#000000';
+      game.physics.startSystem(Phaser.Physics.ARCADE);
+      setTimeout(function() {game.state.start('logo');}, 1000);
+    },
+  };
 }
 
 var x;
