@@ -5,7 +5,7 @@ function boot() {
 		preload: function () {
 			game.load.spritesheet('dude', 'data/images/skull_360.png', TILEWIDTH, TILEHEIGHT);
       		game.load.spritesheet('monster', 'data/images/monster.png', TILEWIDTH, TILEHEIGHT);
-					game.load.spritesheet('sancho', 'data/images/sancho.png', TILEWIDTH, TILEHEIGHT);
+			game.load.spritesheet('sancho', 'data/images/sancho.png', TILEWIDTH, TILEHEIGHT);
 
 			game.load.spritesheet('button1', 'data/images/button1.png', 175, 113);
 			game.load.spritesheet('tower1', 'data/images/tower1.png', TILEWIDTH, TILEHEIGHT);
@@ -16,7 +16,7 @@ function boot() {
 	    },
 		create: function() {
 			pathfinder = game.plugins.add(Phaser.Plugin.PathFinderPlugin);
-			game.stage.backgroundColor = '#CCCCCC';
+			game.stage.backgroundColor = '#000000';
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 			setTimeout(function() {game.state.start('logo');}, 1000);
 		},
@@ -115,6 +115,9 @@ function intro() {
 		},
 		update: function() {
 	    	x.update();
+	    	if(game.input.activePointer.leftButton.isDown){
+				game.state.start('level1');
+			}
 		}
 	};
 }
@@ -543,7 +546,7 @@ function gameover() {
 		create: function() {
 			game.add.sprite(0, 0, 'gameover');
 			setTimeout(function() {
-				game.state.start('intro');
+				location.reload();
 			},5000)
 		},
 	};
@@ -558,7 +561,7 @@ function winner() {
 		create: function() {
 			game.add.sprite(0, 0, 'winner');
 			setTimeout(function() {
-				game.state.start('intro');
+				location.reload();
 			},5000)
 		},
 	};
